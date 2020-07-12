@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
         if(this.currentPage !== 1) {
           this.currentPage = this.list.length / this.itemsPerPage;
         }
+        this.swalService.generateToaster('success', `${item.name} removed`, 'center');
       }
     });
   }
