@@ -1,0 +1,47 @@
+<div class="home">
+  <div class="col-xl-5 col-lg-5 col-md-8 col-sm-12 m-auto">
+    <div class="actionArea">
+      <a class="submitLink actionButton" routerLink="/add-link">
+        <i class="fa fa-plus"></i> SUBMIT A LINK
+      </a>
+      <select (change)="selectOrderType($event.target.value)" class="custom-select">
+        <option value="" disabled selected hidden>Ordey by</option>
+        <option value="most"> Most Voted (A → Z)</option>
+        <option  value="less"> Less Voted (Z → A)</option>
+      </select>
+    </div>
+    <hr>
+    <div class="listArea" (mouseover)="item.showDeleteButton = true" (mouseleave)="item.showDeleteButton = false"
+         *ngFor="let item of list.slice((currentPage -1) * itemsPerPage, currentPage * itemsPerPage) ; let i = index; trackBy: trackByFn">
+      <div class="item">
+        <div class="pointBox">
+          <div class="number">{{item.point}}</div>
+          <div class="text-center">POINTS</div>
+        </div>
+        <div class="infoBox">
+          <div class="info">
+            <div>
+              <strong>{{item.name}}</strong>
+            </div>
+            <div class="small">
+              ({{item.url}})
+            </div>
+          </div>
+          <div class="vote">
+            <a class="actionButton" (click)="voteItem(i,'up')"><i class="fa fa-thumbs-o-up"></i> Up Vote</a>
+            <a class="actionButton" (click)="voteItem(i , 'down')"><i class="fa fa-thumbs-o-down"></i> Down Vote</a>
+          </div>
+        </div>
+        <div *ngIf="item.showDeleteButton" class="deleteBox">
+          <a class="" (click)="deleteItem(i ,item)"><i class="fa fa-minus-circle"></i></a>
+        </div>
+      </div>
+    </div>
+    <app-pagination *ngIf="list.length > 4" [paginationList]="list"
+                              [itemsPerPage]="itemsPerPage"
+                              [itemsLength]="totalItems"
+                              [currentPage]="currentPage"
+                              (newCurrentPage)="getNewCurrentPage($event)">
+    </app-pagination>
+  </div>
+</div>

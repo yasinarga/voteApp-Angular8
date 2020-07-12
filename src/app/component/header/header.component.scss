@@ -1,0 +1,31 @@
+ header {
+   margin: 1rem;
+   border-bottom-style: solid;
+   border-bottom-width: 1px;
+
+   .header {
+     display: flex;
+     justify-content: space-between;
+     .logo {
+       background-image: url("src/assets/hb-logo.png");
+       width: 192px;
+       display: block;
+       background-repeat: no-repeat;
+       background-size: contain;
+       height: 48px;
+       background-position: left;
+       @media (max-width: 768px) {
+         width: 160px;
+         height: 40px;
+       }
+     }
+     .headerLabel{
+       align-self: center;
+       font-size: 1.5em;
+       @media (max-width: 768px) {
+         font-size: 1rem;
+       }
+     }
+   }
+ }
+
