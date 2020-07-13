@@ -5,15 +5,6 @@ import {LSKEY , PAGELIMIT, ORDERTYPE} from '../helperService/contstants';
 
 
 
-interface DataConfig {
-  id: string;
-  name: string;
-  url: string;
-  point: number;
-  created_date: Date;
-  modified_date: Date;
-}
-
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +19,7 @@ export class DataService {
 
   constructor(private helperService: HelperService) {
     let key ;
-    this.orderType.subscribe(item => key =item);
+    this.orderType.subscribe(item => key = item);
     this.sortingArray(key);
   }
 
@@ -49,15 +40,15 @@ export class DataService {
 
     let key ;
     this.orderType.subscribe(item => {key = item});
-    this.sortingArray(key);
+    this.sortingArray(key); // when add new item to data , function will sort list as default type
   };
 
-  deleteData = (index) => {
+  deleteData = (index) => { // selected item will remove from list
     this.data.splice(index, 1);
     this.saveChanges(this.data);
   };
 
-  sortingArray = (orderType) => {
+  sortingArray = (orderType) => {  // this function will sort list according to order type
     this.orderType.next(orderType);
     switch (orderType) {
       case 'most' :
@@ -72,53 +63,45 @@ export class DataService {
             return 1;
           }
         });
-        localStorage.setItem(LSKEY, JSON.stringify(this.data));
-        this.list.next(this.data);
         break;
-      case 'less' :
+      case 'less' : // it sorts item according to less voted
         this.data.sort((one, two) => {
           if (one.point > two.point) {
             return 1;
           } else if (one.point === two.point) {
-            const dateArray = [ new Date(one.modified_date).getTime() , new Date(two.modified_date).getTime()];
+            const dateArray = [ new Date(one.modified_date).getTime() , new Date(two.modified_date).getTime()]; //it compore modified date and
             return ((dateArray[0] < dateArray[1]) ? 1 : ((dateArray[0] > dateArray[1]) ? -1 : 0));
           } else {
             return -1;
           }
         });
-        this.saveChanges(this.data);
         break;
       case 'default':
-        console.log(orderType);
         this.data.sort((one , two) =>{
-
-          const dateArray = [ new Date(one.created_date).getTime() , new Date(two.created_date).getTime()];
+          const dateArray = [ new Date(one.created_date).getTime() , new Date(two.created_date).getTime()]; // default case sorting list according to created_date
           if (dateArray[0] < dateArray[1]) {
-            return 1
+            return 1;
           } else {
-            return -1
+            return -1;
           }
-        })
-        this.saveChanges(this.data);
+        });
         break;
     }
-
+    this.saveChanges(this.data);
   }
 
-  voteItem = (index , type) => {
+  voteItem = (index , type) => {  // it change selected item point according to type ( up  or down).
     let key : string;
     this.orderType.subscribe(item => key = item);
     switch (type) {
       case 'up':
         this.data[index].point ++;
         this.data[index].modified_date = new Date();
-        this.saveChanges(this.data);
         this.sortingArray(key);
         break;
       case 'down':
         this.data[index].point --;
         this.data[index].modified_date = new Date();
-        this.saveChanges(this.data);
         this.sortingArray(key);
         break;
     }

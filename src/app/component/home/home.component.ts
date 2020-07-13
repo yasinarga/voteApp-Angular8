@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     return list.id;
   }
   getNewCurrentPage(event) {
-    this.currentPage = event;
+    this.currentPage = event;  // trigger to new page number
   }
 
   voteItem( index, type)  {
@@ -38,16 +38,17 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   selectOrderType(ordeyType){
+
     this.currentPage = 1;
-    this.dataService.sortingArray(ordeyType);
+    this.dataService.sortingArray(ordeyType); // it will sort according to selected order type
   }
 
   deleteItem(index, item){
     this.swalService.generateDialog(item.name).then( result => {
-      if (result.value) {
+      if (result.value) {  // dialog value is true selected item will remove.
         this.dataService.deleteData(index + ((this.currentPage - 1) * this.itemsPerPage));
         this.totalItems = this.list.length;
-        if(this.currentPage !== 1) {
+        if(this.currentPage !== 1) { // it calculate current page number.
           this.currentPage = this.list.length / this.itemsPerPage;
         }
         this.swalService.generateToaster('success', `${item.name} removed`, 'center');
