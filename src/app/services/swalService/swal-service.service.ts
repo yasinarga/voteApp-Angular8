@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 export class SwalService {
   constructor() {}
 
-  generateToaster(icon, title, position?) {
+  generateToaster(icon, title, position?:'center') {
     const Toast = Swal.mixin({
       toast: true,
       position: position,

@@ -20,19 +20,24 @@ interface DataConfig {
 })
 export class DataService {
   public list = new BehaviorSubject([]);
-  private orderType = new BehaviorSubject(ORDERTYPE);
-  public data: any = JSON.parse(localStorage.getItem('data')) ;
+  public orderType = new BehaviorSubject(ORDERTYPE);
+  public data: any = JSON.parse(localStorage.getItem('data')) && true ? JSON.parse(localStorage.getItem('data'))  : [];
 
 
 
 
   constructor(private helperService: HelperService) {
-    this.data ? this.list.next(this.data) : this.list.next([]);
+    let key ;
+    this.orderType.subscribe(item => key =item);
+    this.sortingArray(key);
   }
 
 
 
   addData = (data) => {
+    if(this.data === null || undefined) {
+      this.data = [];
+    }
     this.data.push({
       id : '_' + Math.random().toString(36).substr(2, 9),
       name : data.name,
@@ -41,20 +46,23 @@ export class DataService {
       created_date : new Date(),
       modified_date : new Date()
     });
-    localStorage.setItem(LSKEY, JSON.stringify(this.data));
-    this.list.next(this.data);
-  }
+
+    let key ;
+    this.orderType.subscribe(item => {key = item});
+    this.sortingArray(key);
+  };
 
   deleteData = (index) => {
     this.data.splice(index, 1);
-  }
+    this.saveChanges(this.data);
+  };
 
-  sortingDArray = (orderType) => {
+  sortingArray = (orderType) => {
     this.orderType.next(orderType);
     switch (orderType) {
       case 'most' :
         this.orderType.next(orderType);
-        let newArray = this.data.sort((one, two) => {
+         this.data.sort((one, two) => {
           if (one.point > two.point) {
             return -1;
           } else if (one.point === two.point) {
@@ -64,12 +72,11 @@ export class DataService {
             return 1;
           }
         });
-        localStorage.setItem(LSKEY, JSON.stringify(newArray));
+        localStorage.setItem(LSKEY, JSON.stringify(this.data));
         this.list.next(this.data);
         break;
       case 'less' :
-        this.orderType.next(orderType);
-       let newArray2 = this.data.sort((one, two) => {
+        this.data.sort((one, two) => {
           if (one.point > two.point) {
             return 1;
           } else if (one.point === two.point) {
@@ -79,34 +86,47 @@ export class DataService {
             return -1;
           }
         });
-        localStorage.setItem(LSKEY, JSON.stringify(newArray2));
-        this.list.next(this.data);
+        this.saveChanges(this.data);
         break;
       case 'default':
+        console.log(orderType);
+        this.data.sort((one , two) =>{
+
+          const dateArray = [ new Date(one.created_date).getTime() , new Date(two.created_date).getTime()];
+          if (dateArray[0] < dateArray[1]) {
+            return 1
+          } else {
+            return -1
+          }
+        })
+        this.saveChanges(this.data);
         break;
     }
 
   }
 
   voteItem = (index , type) => {
-    console.log(index);
     let key : string;
     this.orderType.subscribe(item => key = item);
     switch (type) {
       case 'up':
         this.data[index].point ++;
         this.data[index].modified_date = new Date();
-        localStorage.setItem(LSKEY , JSON.stringify(this.data));
-        this.list.next(this.data);
-        this.sortingDArray(key);
+        this.saveChanges(this.data);
+        this.sortingArray(key);
         break;
       case 'down':
         this.data[index].point --;
         this.data[index].modified_date = new Date();
-        localStorage.setItem(LSKEY , JSON.stringify(this.data));
-        this.list.next(this.data);
-        this.sortingDArray(key);
+        this.saveChanges(this.data);
+        this.sortingArray(key);
         break;
     }
+  }
+
+  saveChanges(data){
+    localStorage.setItem(LSKEY , JSON.stringify(data));
+    this.list.next(data);
+
   }
 }

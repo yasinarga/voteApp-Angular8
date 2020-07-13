@@ -11,7 +11,7 @@
       </select>
     </div>
     <hr>
-    <div class="listArea" (mouseover)="item.showDeleteButton = true" (mouseleave)="item.showDeleteButton = false"
+    <div class="listArea" (mouseover)="hoverID = i" (mouseleave)=" hoverID = -1" (blur)="item.showDeleteButton = false"
          *ngFor="let item of list.slice((currentPage -1) * itemsPerPage, currentPage * itemsPerPage) ; let i = index; trackBy: trackByFn">
       <div class="item">
         <div class="pointBox">
@@ -32,11 +32,12 @@
             <a class="actionButton" (click)="voteItem(i , 'down')"><i class="fa fa-thumbs-o-down"></i> Down Vote</a>
           </div>
         </div>
-        <div *ngIf="item.showDeleteButton" class="deleteBox">
+        <div *ngIf="hoverID === i" class="deleteBox">
           <a class="" (click)="deleteItem(i ,item)"><i class="fa fa-minus-circle"></i></a>
         </div>
       </div>
     </div>
+    <h4 *ngIf="list.length === 0">There is no data</h4>
     <app-pagination *ngIf="list.length > 4" [paginationList]="list"
                               [itemsPerPage]="itemsPerPage"
                               [itemsLength]="totalItems"

@@ -25,7 +25,6 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy{
   }
 
   ngOnInit(): void {
-    console.log(this.paginationList);
     if (this.getClickedNumber === undefined) {
       this.getClickedNumber = this.currentPage;
     }

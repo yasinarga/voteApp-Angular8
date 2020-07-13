@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DataService} from '../../services/dataService/data.service';
 import {SwalService} from '../../services/swalService/swal-service.service';
 
@@ -7,13 +7,12 @@ import {SwalService} from '../../services/swalService/swal-service.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
-  public showDeleteButton  = false;
+export class HomeComponent implements OnInit, OnDestroy {
   public list: any = [];
   public itemsPerPage = 5;
   public totalItems = 10;
   public currentPage = 1;
-  public orbeyBy: string;
+  public hoverID : number;
 
 
   constructor(
@@ -39,7 +38,8 @@ export class HomeComponent implements OnInit {
   }
 
   selectOrderType(ordeyType){
-    this.dataService.sortingDArray(ordeyType);
+    this.currentPage = 1;
+    this.dataService.sortingArray(ordeyType);
   }
 
   deleteItem(index, item){
@@ -53,6 +53,10 @@ export class HomeComponent implements OnInit {
         this.swalService.generateToaster('success', `${item.name} removed`, 'center');
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.dataService.orderType.next('default');
   }
 
 

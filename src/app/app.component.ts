@@ -10,7 +10,11 @@ import {LSKEY, ORDERTYPE} from './services/helperService/contstants';
 export class AppComponent {
 
   constructor(private helperService: HelperService) {
+
+  if(!localStorage.getItem('first_init')){
+    localStorage.setItem('first_init', '1');
     localStorage.setItem(LSKEY , JSON.stringify(helperService.defaultData()));
+  }
     localStorage.setItem(ORDERTYPE , 'default');
   }
 }
