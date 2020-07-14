@@ -92,6 +92,10 @@ $linkTransition: all .3s cubic-bezier(1,.25,0,.75) 0s;
           }
         }
       }
+      @media (max-width: 768px) {
+        grid-gap:10px
+
+      }
     }
   }
 }

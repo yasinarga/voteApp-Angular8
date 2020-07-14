@@ -20,6 +20,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
  
 ### Add Link
  ![Home Page](src/assets/add-listSS.PNG)
+ 
+ 
+ ## Mobile Responsive Design
+ ![Mobile Home](src/assets/mobil-home.PNG) ![Mobile Home](src/assets/mobil-add-list.PNG)
 
 
 
