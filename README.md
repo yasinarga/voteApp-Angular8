@@ -11,7 +11,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 > git pull origin master
 
 > npm install
->
+
+> npm start
 
 
 ###Home Page
