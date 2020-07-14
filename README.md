@@ -2,9 +2,9 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.17.
 
-##[Live Demo with Heroku](https://voteapp-challenge.herokuapp.com/)
+## [Live Demo with Heroku](https://voteapp-challenge.herokuapp.com/)
 
-##Download Project 
+## Download Project 
 
 > git clone https://github.com/yasinarga/voteApp-Angular8.git
 
@@ -15,10 +15,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 > npm start
 
 
-###Home Page
+### Home Page
  ![Home Page](src/assets/homeSS.PNG)
  
-###Add Link
+### Add Link
  ![Home Page](src/assets/add-listSS.PNG)
 
 
